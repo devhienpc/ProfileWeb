@@ -34,7 +34,15 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env }) => {
       if (key === 'age') {
         fields[key] = Math.max(0, Math.min(120, Number(val) || 0))
       } else {
-        const str = String(val ?? '').slice(0, MAX_LEN)
+        let str = String(val ?? '').slice(0, MAX_LEN)
+        if (key === 'avatar_url') {
+          const gDriveMatch =
+            str.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+            str.match(/drive\.google\.com\/(?:open|uc)\?(?:[^&]*&)*id=([a-zA-Z0-9_-]+)/)
+          if (gDriveMatch && gDriveMatch[1]) {
+            str = `https://lh3.googleusercontent.com/d/${gDriveMatch[1]}`
+          }
+        }
         fields[key] = str
       }
     }

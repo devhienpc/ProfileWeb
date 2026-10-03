@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import type { Project, Skill, Social, Profile, Note } from '../types/api'
+import { normalizeImageUrl } from '../utils/image'
 import {
   LogOut, Plus, Pencil, Trash2, Eye, EyeOff,
   Save, X, ChevronUp, ChevronDown, RefreshCw,
@@ -356,6 +357,20 @@ function ProfileTab() {
               value={String(data[f.key] ?? '')}
               onChange={e => setData(d => d ? { ...d, [f.key]: f.type === 'number' ? Number(e.target.value) : e.target.value } : d)}
             />
+            {f.key === 'avatar_url' && data.avatar_url && (
+              <div style={{ marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <img
+                  src={normalizeImageUrl(data.avatar_url)}
+                  alt="Preview"
+                  referrerPolicy="no-referrer"
+                  style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', border: '1.5px solid var(--accent-border)' }}
+                  onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none' }}
+                />
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                  {data.avatar_url.includes('drive.google.com') ? '✨ Đã tự động nhận diện & chuyển đổi link Google Drive' : 'Xem trước ảnh'}
+                </span>
+              </div>
+            )}
           </label>
         ))}
       </div>

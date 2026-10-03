@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { motion } from 'motion/react'
 import type { Profile, Social } from '../types/api'
 import { useTypewriter } from '../hooks/useTypewriter'
+import { normalizeImageUrl } from '../utils/image'
 import { IconDownload, IconMapPin, IconGraduationCap, IconCalendar } from './Icons'
 import { FaGithub, FaLinkedin, FaFacebook } from 'react-icons/fa6'
 import { Mail } from 'lucide-react'
@@ -44,12 +46,15 @@ interface HeroBannerProps {
 }
 
 export default function HeroBanner({ profile, socials, loading }: HeroBannerProps) {
+  const [avatarError, setAvatarError] = useState(false)
   const name = profile?.full_name ?? ''
   const displayedName = useTypewriter(name, 60, loading ? 99999 : 400)
 
   if (loading || !profile) return <HeroSkeleton />
 
   const initials = name.split(' ').map(w => w[0]).slice(-2).join('').toUpperCase()
+  const avatarSrc = normalizeImageUrl(profile.avatar_url)
+  const showAvatar = Boolean(avatarSrc && !avatarError)
 
   return (
     <motion.div
@@ -64,10 +69,16 @@ export default function HeroBanner({ profile, socials, loading }: HeroBannerProp
       <div className="hero-avatar-wrap" aria-hidden="true">
         <div className="hero-avatar-ring" />
         <div className="hero-avatar">
-          {profile.avatar_url
-            ? <img src={profile.avatar_url} alt={profile.full_name} />
-            : <span className="hero-avatar-initials">{initials}</span>
-          }
+          {showAvatar ? (
+            <img
+              src={avatarSrc}
+              alt={profile.full_name}
+              referrerPolicy="no-referrer"
+              onError={() => setAvatarError(true)}
+            />
+          ) : (
+            <span className="hero-avatar-initials">{initials}</span>
+          )}
         </div>
       </div>
 
