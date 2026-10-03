@@ -1,21 +1,7 @@
-import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
-
-type Theme = 'dark' | 'light'
+import './Header.css'
 
 export default function Header() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const saved = localStorage.getItem('portfolio-theme') as Theme | null
-    return saved ?? 'dark'
-  })
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('portfolio-theme', theme)
-  }, [theme])
-
-  const toggle = () => setTheme(t => t === 'dark' ? 'light' : 'dark')
-
   return (
     <motion.header
       initial={{ opacity: 0, y: -16 }}
@@ -36,105 +22,69 @@ export default function Header() {
         borderBottom: '1px solid var(--border-subtle)',
       }}
     >
-      {/* Logo + name */}
+      {/* Brand: Profile */}
       <a
         href="/"
-        aria-label="Trang chủ"
+        aria-label="Profile"
         style={{
-          display: 'flex',
+          display: 'inline-flex',
           alignItems: 'center',
-          gap: '0.625rem',
           textDecoration: 'none',
           color: 'inherit',
+          transition: 'transform 0.2s ease, opacity 0.2s ease',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.transform = 'translateY(-1px)'
+          e.currentTarget.style.opacity = '0.9'
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.transform = 'translateY(0)'
+          e.currentTarget.style.opacity = '1'
         }}
       >
         <span
           style={{
-            fontFamily: 'monospace',
-            fontWeight: 700,
-            fontSize: '1.125rem',
-            color: 'var(--accent)',
-            letterSpacing: '-0.02em',
+            fontFamily: 'var(--font-sans)',
+            fontWeight: 800,
+            fontSize: '1.15rem',
+            letterSpacing: '-0.025em',
             lineHeight: 1,
-            padding: '0.25rem 0.5rem',
-            border: '1.5px solid var(--accent-border)',
-            borderRadius: 'var(--radius-sm)',
-            background: 'var(--accent-dim)',
+            background: 'linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            filter: 'drop-shadow(0 2px 10px rgba(99, 102, 241, 0.25))',
           }}
         >
-          {'</>'}
-        </span>
-        <span
-          style={{
-            fontWeight: 600,
-            fontSize: '0.9375rem',
-            color: 'var(--text-primary)',
-            letterSpacing: '-0.01em',
-          }}
-        >
-          Trương Văn Hiền
+          Profile
         </span>
       </a>
 
-      {/* Action buttons */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-        <a
-          href="/admin.html"
-          title="Admin Panel"
-          aria-label="Trang quản trị"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '2.25rem',
-            height: '2.25rem',
-            borderRadius: 'var(--radius-pill)',
-            border: '1px solid var(--border-subtle)',
-            background: 'rgba(255, 255, 255, 0.04)',
-            color: 'var(--text-muted)',
-            textDecoration: 'none',
-            fontSize: '0.9rem',
-            transition: 'all 0.2s ease',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.color = 'var(--accent)'
-            e.currentTarget.style.borderColor = 'var(--accent-border)'
-            e.currentTarget.style.background = 'var(--accent-dim)'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.color = 'var(--text-muted)'
-            e.currentTarget.style.borderColor = 'var(--border-subtle)'
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
-          }}
+      {/* Settings Button */}
+      <a
+        href="/admin.html"
+        className="button"
+        title="Admin Panel"
+        aria-label="Settings"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          viewBox="0 0 20 20"
+          height="20"
+          fill="none"
+          className="svg-icon"
         >
-          ⚙️
-        </a>
-
-        {/* Theme toggle */}
-        <button
-          id="theme-toggle"
-          onClick={toggle}
-          aria-label={theme === 'dark' ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '2.25rem',
-            height: '2.25rem',
-            borderRadius: 'var(--radius-pill)',
-            border: '1px solid var(--border-accent)',
-            background: 'var(--accent-dim)',
-            color: 'var(--accent)',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            transition: 'background 0.2s, transform 0.2s',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-glow)')}
-          onMouseLeave={e => (e.currentTarget.style.background = 'var(--accent-dim)')}
-        >
-          {theme === 'dark' ? '☀️' : '🌙'}
-        </button>
-      </div>
+          <g strokeWidth="1.5" strokeLinecap="round" stroke="currentColor">
+            <circle r="2.5" cy="10" cx="10" />
+            <path
+              fillRule="evenodd"
+              d="m8.39079 2.80235c.53842-1.51424 2.67991-1.51424 3.21831-.00001.3392.95358 1.4284 1.40477 2.3425.97027 1.4514-.68995 2.9657.82427 2.2758 2.27575-.4345.91407.0166 2.00334.9702 2.34248 1.5143.53842 1.5143 2.67996 0 3.21836-.9536.3391-1.4047 1.4284-.9702 2.3425.6899 1.4514-.8244 2.9656-2.2758 2.2757-.9141-.4345-2.0033.0167-2.3425.9703-.5384 1.5142-2.67989 1.5142-3.21831 0-.33914-.9536-1.4284-1.4048-2.34247-.9703-1.45148.6899-2.96571-.8243-2.27575-2.2757.43449-.9141-.01669-2.0034-.97028-2.3425-1.51422-.5384-1.51422-2.67994.00001-3.21836.95358-.33914 1.40476-1.42841.97027-2.34248-.68996-1.45148.82427-2.9657 2.27575-2.27575.91407.4345 2.00333-.01669 2.34247-.97026z"
+              clipRule="evenodd"
+            />
+          </g>
+        </svg>
+        <span className="lable">Settings</span>
+      </a>
     </motion.header>
   )
 }

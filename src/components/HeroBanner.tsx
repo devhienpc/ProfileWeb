@@ -48,7 +48,7 @@ interface HeroBannerProps {
 export default function HeroBanner({ profile, socials, loading }: HeroBannerProps) {
   const [avatarError, setAvatarError] = useState(false)
   const name = profile?.full_name ?? ''
-  const displayedName = useTypewriter(name, 60, loading ? 99999 : 400)
+  const displayedName = useTypewriter(name, 60, loading ? 99999 : 350)
 
   if (loading || !profile) return <HeroSkeleton />
 

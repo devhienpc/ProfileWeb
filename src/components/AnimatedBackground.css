@@ -1,4 +1,6 @@
-/* ─── Root wrapper ───────────────────────────────────────────── */
+/* ─── AnimatedBackground.css ──────────────────────────────────── */
+
+/* ─── Root Container ───────────────────────────────────────────── */
 .ab-root {
   position: fixed;
   inset: 0;
@@ -6,283 +8,723 @@
   pointer-events: none;
   overflow: hidden;
   isolation: isolate;
+  background-color: #060b1a;
 }
 
-/* ─── Layer 1: sky gradient ──────────────────────────────────── */
+/* ─── Layer 1: Sky Gradient ──────────────────────────────────── */
 .ab-gradient {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    170deg,
-    #060b1a 0%,
-    #0a1230 20%,
-    #0d1840 42%,
-    #160e38 65%,
-    #0a0822 100%
+    175deg,
+    #050916 0%,
+    #08102a 22%,
+    #0b1638 45%,
+    #140d32 68%,
+    #070618 100%
   );
-  background-size: 300% 300%;
-  animation: gradientDrift 42s ease-in-out infinite alternate;
+  background-size: 200% 200%;
+  animation: skyGradientDrift 48s ease-in-out infinite alternate;
+  will-change: background-position;
 }
 
 [data-theme="light"] .ab-gradient {
   background: linear-gradient(
-    170deg,
-    #c4d4ef 0%,
-    #d0dff5 30%,
-    #e0eaf8 60%,
-    #eef3fb 100%
+    175deg,
+    #a5c2eb 0%,
+    #b8d0f3 25%,
+    #f2c4ce 55%,
+    #fedac5 78%,
+    #fef3e2 100%
   );
-  animation: gradientDriftLight 42s ease-in-out infinite alternate;
+  background-size: 200% 200%;
+  animation: skyGradientDrift 48s ease-in-out infinite alternate;
 }
 
-@keyframes gradientDrift {
-  0%   { background-position: 0%   30%; }
-  50%  { background-position: 60%  70%; }
+@keyframes skyGradientDrift {
+  0%   { background-position: 0% 15%; }
+  50%  { background-position: 50% 85%; }
   100% { background-position: 100% 20%; }
 }
 
-@keyframes gradientDriftLight {
-  0%   { background-position: 0%   20%; }
-  100% { background-position: 100% 80%; }
-}
-
-/* ─── Layer 2: aurora blobs ──────────────────────────────────── */
-.ab-blobs {
+/* ─── Layer 2: 4 Nebulas (Tinh vân) ──────────────────────────── */
+.ab-nebulas {
   position: absolute;
   inset: 0;
   mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 1;
+  transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+  will-change: transform;
 }
 
-[data-theme="light"] .ab-blobs {
-  mix-blend-mode: multiply;
+[data-theme="light"] .ab-nebulas {
+  mix-blend-mode: soft-light;
+  opacity: 0.6;
 }
 
-.ab-blob {
+.ab-nebula {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
   will-change: transform, opacity;
 }
 
-.ab-blob--blue {
-  width: 60vw;
-  height: 50vh;
-  top: -10%;
-  left: 18%;
-  background: radial-gradient(ellipse, rgba(30,100,255,0.18) 0%, transparent 70%);
-  animation: blobDrift1 28s ease-in-out infinite alternate;
+/* Purple Nebula: #6b3fa0, opacity ~0.20, blur 95px */
+.ab-nebula--purple {
+  width: 58vw;
+  height: 48vh;
+  top: -8%;
+  left: 12%;
+  background: radial-gradient(ellipse at center, rgba(107, 63, 160, 0.22) 0%, rgba(107, 63, 160, 0.08) 50%, transparent 72%);
+  filter: blur(95px);
+  animation: nebulaDrift1 85s ease-in-out infinite alternate;
 }
 
-[data-theme="light"] .ab-blob--blue {
-  background: radial-gradient(ellipse, rgba(30,100,220,0.10) 0%, transparent 70%);
+/* Blue Nebula: #1e5bd8, opacity ~0.22, blur 110px */
+.ab-nebula--blue {
+  width: 52vw;
+  height: 46vh;
+  top: 14%;
+  right: -6%;
+  background: radial-gradient(ellipse at center, rgba(30, 91, 216, 0.24) 0%, rgba(30, 91, 216, 0.08) 50%, transparent 72%);
+  filter: blur(110px);
+  animation: nebulaDrift2 70s ease-in-out infinite alternate;
 }
 
-.ab-blob--amber {
-  width: 42vw;
+/* Pink Nebula: #b04a9a, opacity ~0.18, blur 85px */
+.ab-nebula--pink {
+  width: 46vw;
+  height: 42vh;
+  bottom: 2%;
+  left: -4%;
+  background: radial-gradient(ellipse at center, rgba(176, 74, 154, 0.19) 0%, rgba(176, 74, 154, 0.06) 50%, transparent 72%);
+  filter: blur(85px);
+  animation: nebulaDrift3 100s ease-in-out infinite alternate;
+}
+
+/* Deep Indigo/Cyan Nebula: opacity ~0.16 */
+.ab-nebula--indigo {
+  width: 44vw;
   height: 38vh;
-  top: 3%;
-  right: -10%;
-  background: radial-gradient(ellipse, rgba(255,100,40,0.13) 0%, transparent 70%);
-  animation: blobDrift2 34s ease-in-out infinite alternate;
+  bottom: 8%;
+  right: 14%;
+  background: radial-gradient(ellipse at center, rgba(14, 116, 144, 0.16) 0%, rgba(67, 56, 202, 0.08) 50%, transparent 70%);
+  filter: blur(90px);
+  animation: nebulaDrift4 90s ease-in-out infinite alternate;
 }
 
-[data-theme="light"] .ab-blob--amber {
-  background: radial-gradient(ellipse, rgba(255,160,80,0.08) 0%, transparent 70%);
+@keyframes nebulaDrift1 {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50%  { transform: translate(5%, 7%) scale(1.10) rotate(12deg); }
+  100% { transform: translate(-4%, 4%) scale(0.95) rotate(-8deg); }
 }
 
-.ab-blob--violet {
-  width: 48vw;
-  height: 44vh;
-  bottom: -12%;
-  left: -6%;
-  background: radial-gradient(ellipse, rgba(100,50,220,0.15) 0%, transparent 70%);
-  animation: blobDrift3 44s ease-in-out infinite alternate;
+@keyframes nebulaDrift2 {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50%  { transform: translate(-6%, 8%) scale(1.12) rotate(-14deg); }
+  100% { transform: translate(4%, -5%) scale(0.92) rotate(10deg); }
 }
 
-[data-theme="light"] .ab-blob--violet {
-  background: radial-gradient(ellipse, rgba(100,60,180,0.06) 0%, transparent 70%);
+@keyframes nebulaDrift3 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(7%, -6%) scale(1.14); }
+  100% { transform: translate(-5%, 6%) scale(0.94); }
 }
 
-@keyframes blobDrift1 {
-  0%   { transform: translate(0,   0)   scale(1);    }
-  33%  { transform: translate(5%,  7%)  scale(1.10); }
-  66%  { transform: translate(-4%, 3%)  scale(0.94); }
-  100% { transform: translate(7%, -5%)  scale(1.06); }
-}
-@keyframes blobDrift2 {
-  0%   { transform: translate(0,   0)   scale(1);    }
-  50%  { transform: translate(-6%, 9%)  scale(1.14); }
-  100% { transform: translate(4%, -6%)  scale(0.92); }
-}
-@keyframes blobDrift3 {
-  0%   { transform: translate(0,   0)   scale(1);    }
-  40%  { transform: translate(7%, -6%)  scale(1.12); }
-  100% { transform: translate(-5%, 8%)  scale(0.95); }
+@keyframes nebulaDrift4 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-5%, -6%) scale(1.08); }
+  100% { transform: translate(6%, 5%) scale(0.96); }
 }
 
-/* ─── Canvas ─────────────────────────────────────────────────── */
-.ab-canvas {
+/* ─── Layer 3: Aurora Ribbons (Dải cực quang) ────────────────── */
+.ab-aurora-wrap {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 52%;
+  pointer-events: none;
+  overflow: hidden;
+  mix-blend-mode: screen;
+  z-index: 1;
+  transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+  will-change: transform;
 }
 
-.ab-canvas--stars { z-index: 1; }
-.ab-canvas--float { z-index: 3; }
+[data-theme="light"] .ab-aurora-wrap {
+  display: none;
+}
 
-/* ─── Moon ───────────────────────────────────────────────────── */
+.ab-aurora {
+  position: absolute;
+  width: 130%;
+  left: -15%;
+  height: 100%;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  will-change: transform, opacity, filter;
+}
+
+/* Aurora Ribbon 1: Emerald to Cyan */
+.ab-aurora--1 {
+  top: -12%;
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0) 0%,
+    rgba(16, 185, 129, 0.28) 25%,
+    rgba(6, 182, 212, 0.32) 50%,
+    rgba(59, 130, 246, 0.20) 75%,
+    rgba(16, 185, 129, 0) 100%
+  );
+  filter: blur(44px);
+  animation: auroraWave1 22s ease-in-out infinite alternate;
+}
+
+/* Aurora Ribbon 2: Cyan to Violet */
+.ab-aurora--2 {
+  top: -6%;
+  background: linear-gradient(
+    145deg,
+    rgba(6, 182, 212, 0) 0%,
+    rgba(20, 184, 166, 0.25) 30%,
+    rgba(99, 102, 241, 0.28) 65%,
+    rgba(6, 182, 212, 0) 100%
+  );
+  filter: blur(48px);
+  animation: auroraWave2 28s ease-in-out infinite alternate;
+}
+
+@keyframes auroraWave1 {
+  0% {
+    transform: translateY(0) scaleY(1) skewX(-5deg);
+    opacity: 0.22;
+    filter: blur(42px) hue-rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) scaleY(1.25) skewX(6deg);
+    opacity: 0.34;
+    filter: blur(50px) hue-rotate(20deg);
+  }
+  100% {
+    transform: translateY(12px) scaleY(0.92) skewX(-3deg);
+    opacity: 0.24;
+    filter: blur(38px) hue-rotate(-12deg);
+  }
+}
+
+@keyframes auroraWave2 {
+  0% {
+    transform: translateY(0) scaleY(1) skewX(6deg);
+    opacity: 0.24;
+    filter: blur(46px) hue-rotate(0deg);
+  }
+  50% {
+    transform: translateY(20px) scaleY(1.18) skewX(-5deg);
+    opacity: 0.36;
+    filter: blur(54px) hue-rotate(-18deg);
+  }
+  100% {
+    transform: translateY(-14px) scaleY(0.88) skewX(4deg);
+    opacity: 0.20;
+    filter: blur(42px) hue-rotate(16deg);
+  }
+}
+
+/* ─── Layer 4: Moon with 3-Layer Glow (Mặt trăng) ────────────── */
+/* Requirement 1:
+   - top 10-14%, right 8%, diameter 150-200px
+   - 3 glow layers (near, far, faint ray halo), gentle 8s breathing
+   - z-index below content and header, no clipping at edges
+*/
 .ab-moon-wrap {
   position: absolute;
-  top: 3vh;
-  right: 5vw;
+  top: 12%;
+  right: 8%;
+  width: 175px;
+  height: 175px;
   z-index: 2;
-  width: 130px;
-  height: 130px;
-  /* smooth parallax */
-  transition: transform 0.12s ease-out;
+  pointer-events: none;
+  transition: transform 0.18s cubic-bezier(0.1, 0.9, 0.2, 1);
+  will-change: transform;
 }
 
-/* Outer glow layers */
+@media (max-width: 768px) {
+  .ab-moon-wrap {
+    top: 10%;
+    right: 6%;
+    width: 130px;
+    height: 130px;
+  }
+}
+
+/* Common glow styling */
 .ab-moon-glow {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
 }
 
-.ab-moon-glow--outer {
-  inset: -55px;
-  background: radial-gradient(circle, rgba(200,220,255,0.06) 0%, transparent 65%);
-  animation: moonBreathe 8s ease-in-out infinite;
-}
-
-.ab-moon-glow--mid {
-  inset: -28px;
-  background: radial-gradient(circle, rgba(210,225,255,0.09) 0%, transparent 60%);
-  animation: moonBreathe 8s ease-in-out infinite 0.5s;
-}
-
+/* Glow 1: Inner intense moonlight */
 .ab-moon-glow--inner {
-  inset: -10px;
-  background: radial-gradient(circle, rgba(230,240,255,0.12) 0%, transparent 55%);
-  animation: moonBreathe 8s ease-in-out infinite 1s;
+  inset: -22px;
+  background: radial-gradient(
+    circle,
+    rgba(235, 245, 255, 0.42) 0%,
+    rgba(195, 225, 255, 0.18) 45%,
+    transparent 72%
+  );
+  animation: moonGlowBreathe 8s ease-in-out infinite;
 }
 
-@keyframes moonBreathe {
-  0%,100% { opacity: 0.7; transform: scale(1);    }
-  50%      { opacity: 1.0; transform: scale(1.04); }
+/* Glow 2: Outer wide ambient glow */
+.ab-moon-glow--outer {
+  inset: -75px;
+  background: radial-gradient(
+    circle,
+    rgba(160, 205, 255, 0.22) 0%,
+    rgba(125, 180, 255, 0.08) 50%,
+    transparent 76%
+  );
+  animation: moonGlowBreathe 8s ease-in-out infinite 0.6s;
 }
 
-/* Moon disc */
+/* Glow 3: Faint ray halo (Tia sáng mờ) */
+.ab-moon-glow--rays {
+  inset: -130px;
+  background: radial-gradient(
+    circle,
+    rgba(205, 230, 255, 0.15) 0%,
+    rgba(165, 210, 255, 0.04) 42%,
+    transparent 68%
+  );
+  animation: moonGlowBreathe 8s ease-in-out infinite 1.2s;
+}
+
+@keyframes moonGlowBreathe {
+  0%, 100% {
+    opacity: 0.70;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1.0;
+    transform: scale(1.05);
+  }
+}
+
+/* Moon Disc */
 .ab-moon {
   position: absolute;
   inset: 0;
   border-radius: 50%;
   background: radial-gradient(
-    circle at 35% 35%,
-    #e8eefc 0%,
-    #cdd8f0 30%,
-    #b0c0e0 60%,
-    #8a9ec8 100%
+    circle at 36% 36%,
+    #f2f6ff 0%,
+    #dbe5f7 28%,
+    #b6c8e8 58%,
+    #849bc4 88%,
+    #697fa8 100%
   );
   box-shadow:
-    inset -18px -12px 28px rgba(0,0,0,0.25),
-    inset 6px 6px 14px rgba(255,255,255,0.12),
-    0 0 30px rgba(180,200,255,0.25);
-  animation: moonBreathe 8s ease-in-out infinite;
+    inset -22px -16px 36px rgba(10, 16, 35, 0.42),
+    inset 8px 8px 18px rgba(255, 255, 255, 0.28),
+    0 0 35px rgba(180, 215, 255, 0.35);
+  animation: moonDiscPulse 8s ease-in-out infinite;
   overflow: hidden;
 }
 
-/* Moon highlight (crescent-like edge light) */
-.ab-moon-highlight {
+@keyframes moonDiscPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow:
+      inset -22px -16px 36px rgba(10, 16, 35, 0.42),
+      inset 8px 8px 18px rgba(255, 255, 255, 0.28),
+      0 0 32px rgba(180, 215, 255, 0.32);
+  }
+  50% {
+    transform: scale(1.025);
+    box-shadow:
+      inset -22px -16px 36px rgba(10, 16, 35, 0.36),
+      inset 8px 8px 20px rgba(255, 255, 255, 0.35),
+      0 0 46px rgba(195, 225, 255, 0.45);
+  }
+}
+
+/* Lunar Maria (dark basalt plains) */
+.ab-moon-mare {
   position: absolute;
-  top: 8%;
-  left: 10%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(90, 115, 155, 0.32) 0%, rgba(70, 92, 130, 0.18) 60%, transparent 80%);
+  pointer-events: none;
+}
+
+.ab-moon-mare--1 {
   width: 55%;
-  height: 45%;
+  height: 48%;
+  top: 38%;
+  left: 32%;
+  filter: blur(3px);
+}
+
+.ab-moon-mare--2 {
+  width: 38%;
+  height: 34%;
+  top: 18%;
+  right: 15%;
+  filter: blur(2px);
+}
+
+/* Moon Craters */
+.ab-crater {
+  position: absolute;
   border-radius: 50%;
   background: radial-gradient(
-    ellipse at 30% 30%,
-    rgba(255,255,255,0.22) 0%,
-    transparent 65%
+    circle at 35% 35%,
+    rgba(120, 145, 190, 0.32) 0%,
+    rgba(75, 95, 140, 0.45) 55%,
+    transparent 75%
+  );
+  box-shadow:
+    inset 1px 1px 3px rgba(0, 0, 0, 0.28),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.12);
+}
+
+.ab-crater--1 { width: 28px; height: 28px; top: 22%; left: 26%; }
+.ab-crater--2 { width: 18px; height: 18px; top: 52%; left: 58%; }
+.ab-crater--3 { width: 22px; height: 22px; top: 66%; left: 24%; }
+.ab-crater--4 { width: 14px; height: 14px; top: 32%; left: 68%; }
+.ab-crater--5 { width: 11px; height: 11px; top: 76%; left: 60%; }
+
+/* Moon Crescent Highlight */
+.ab-moon-highlight {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  width: 58%;
+  height: 48%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 32% 32%,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 70%
   );
   pointer-events: none;
 }
 
-/* Craters */
-.ab-crater {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, rgba(130,155,200,0.25) 0%, rgba(80,100,150,0.35) 50%, transparent 70%);
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2), inset -1px -1px 2px rgba(255,255,255,0.08);
+/* Light mode: Moon transforms into soft sunset glow / fades gracefully */
+[data-theme="light"] .ab-moon-wrap {
+  opacity: 0.25;
+  filter: sepia(0.6) hue-rotate(320deg) brightness(1.2);
 }
 
-.ab-crater--1 { width: 22px; height: 22px; top: 18%; left: 25%; }
-.ab-crater--2 { width: 14px; height: 14px; top: 48%; left: 55%; }
-.ab-crater--3 { width: 18px; height: 18px; top: 62%; left: 22%; }
-.ab-crater--4 { width: 10px; height: 10px; top: 30%; left: 65%; }
-.ab-crater--5 { width: 8px;  height: 8px;  top: 72%; left: 58%; }
+/* ─── Layer 5: Night Clouds (Mây đêm) ────────────────────────── */
+/* Requirement 5:
+   - 4-6 thin clouds drifting at different speeds
+   - clouds near the moon have illuminated rim
+   - dark slate-blue in night, soft white-rose in light mode
+*/
+.ab-clouds-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+  will-change: transform;
+}
 
-/* Clouds drifting across moon */
 .ab-cloud {
   position: absolute;
   border-radius: 999px;
-  background: rgba(200,215,255,0.06);
-  filter: blur(6px);
+  background: linear-gradient(
+    90deg,
+    rgba(14, 22, 42, 0) 0%,
+    rgba(22, 36, 68, 0.36) 20%,
+    rgba(28, 46, 85, 0.44) 50%,
+    rgba(22, 36, 68, 0.36) 80%,
+    rgba(14, 22, 42, 0) 100%
+  );
+  filter: blur(8px);
   pointer-events: none;
-  z-index: 4;
+  will-change: transform, opacity;
 }
 
-.ab-cloud--1 {
-  width: 160px; height: 18px;
-  top: 40%; left: -160px;
-  animation: cloudDrift1 18s linear infinite;
+[data-theme="light"] .ab-cloud {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.65) 20%,
+    rgba(255, 245, 240, 0.75) 50%,
+    rgba(255, 255, 255, 0.65) 80%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  filter: blur(12px);
 }
 
-.ab-cloud--2 {
-  width: 120px; height: 12px;
-  top: 55%; left: -120px;
-  animation: cloudDrift2 25s linear infinite 6s;
+/* Clouds crossing the Moon (top 11% - 16%) with illuminated silver moonlight rim */
+.ab-cloud--moon1 {
+  width: 350px;
+  height: 24px;
+  top: 11%;
+  left: -350px;
+  box-shadow:
+    0 -3px 18px rgba(220, 240, 255, 0.32),
+    inset 0 2px 10px rgba(240, 250, 255, 0.28);
+  animation: cloudGlide1 44s linear infinite;
 }
 
-.ab-cloud--3 {
-  width: 200px; height: 22px;
-  top: 25%; left: -200px;
-  animation: cloudDrift3 32s linear infinite 12s;
+.ab-cloud--moon2 {
+  width: 290px;
+  height: 20px;
+  top: 15%;
+  left: -290px;
+  box-shadow:
+    0 -3px 16px rgba(210, 235, 255, 0.28),
+    inset 0 2px 8px rgba(230, 245, 255, 0.24);
+  animation: cloudGlide2 64s linear infinite 12s;
 }
 
-@keyframes cloudDrift1 {
-  from { transform: translateX(0); opacity: 0; }
-  5%   { opacity: 1; }
-  85%  { opacity: 0.7; }
-  to   { transform: translateX(500px); opacity: 0; }
-}
-@keyframes cloudDrift2 {
-  from { transform: translateX(0); opacity: 0; }
-  8%   { opacity: 0.8; }
-  80%  { opacity: 0.5; }
-  to   { transform: translateX(500px); opacity: 0; }
-}
-@keyframes cloudDrift3 {
-  from { transform: translateX(0); opacity: 0; }
-  6%   { opacity: 0.6; }
-  85%  { opacity: 0.4; }
-  to   { transform: translateX(500px); opacity: 0; }
+/* Mid clouds */
+.ab-cloud--mid1 {
+  width: 280px;
+  height: 20px;
+  top: 32%;
+  left: -280px;
+  animation: cloudGlide3 82s linear infinite 4s;
 }
 
-/* Light mode: hide moon */
-[data-theme="light"] .ab-moon-wrap {
-  display: none;
+.ab-cloud--mid2 {
+  width: 360px;
+  height: 25px;
+  top: 48%;
+  left: -360px;
+  animation: cloudGlide1 105s linear infinite 28s;
 }
 
-/* ─── Reduced motion: freeze all animation ────────────────────── */
+/* Low cloud */
+.ab-cloud--low {
+  width: 420px;
+  height: 30px;
+  top: 66%;
+  left: -420px;
+  animation: cloudGlide2 130s linear infinite 18s;
+}
+
+@keyframes cloudGlide1 {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.38;
+  }
+  88% {
+    opacity: 0.32;
+  }
+  100% {
+    transform: translateX(calc(100vw + 450px));
+    opacity: 0;
+  }
+}
+
+@keyframes cloudGlide2 {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.34;
+  }
+  85% {
+    opacity: 0.28;
+  }
+  100% {
+    transform: translateX(calc(100vw + 450px));
+    opacity: 0;
+  }
+}
+
+@keyframes cloudGlide3 {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  7% {
+    opacity: 0.30;
+  }
+  86% {
+    opacity: 0.24;
+  }
+  100% {
+    transform: translateX(calc(100vw + 380px));
+    opacity: 0;
+  }
+}
+
+/* ─── Layer 6: Unified Canvas ────────────────────────────────── */
+.ab-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ─── Layer 7: Interactive Mouse Glow ────────────────────────── */
+/* Requirement 8: Vầng sáng mờ đi theo chuột phía sau card */
+.ab-mouse-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(56, 140, 255, 0.14) 0%,
+    rgba(30, 90, 240, 0.04) 50%,
+    transparent 72%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 2;
+  will-change: transform;
+}
+
+[data-theme="light"] .ab-mouse-glow {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 170, 90, 0.16) 0%,
+    rgba(255, 130, 60, 0.04) 50%,
+    transparent 72%
+  );
+}
+
+/* ─── Layer 8: Horizon & Mountains (Đường chân trời) ──────────── */
+/* Requirement 7:
+   - Silhouette núi/thành phố ở đáy màn hình
+   - Cửa sổ/đèn nhấp nháy vàng ấm
+   - Sương mù mờ phía trên
+*/
+.ab-horizon {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  z-index: 3;
+  pointer-events: none;
+  transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+  will-change: transform;
+}
+
+.ab-horizon-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Theme variables for mountains */
+:root {
+  --ab-mountain-far:  #070e24;
+  --ab-mountain-near: #040816;
+}
+
+[data-theme="light"] {
+  --ab-mountain-far:  #7c6b8c;
+  --ab-mountain-near: #554466;
+}
+
+/* Distant beacon & window lights */
+.ab-beacon {
+  will-change: opacity;
+}
+
+.ab-beacon--gold {
+  fill: #fef08a;
+  animation: beaconTwinkle1 2.2s ease-in-out infinite;
+}
+
+.ab-beacon--gold2 {
+  fill: #fde047;
+  animation: beaconTwinkle2 3.1s ease-in-out infinite 0.8s;
+}
+
+.ab-beacon--amber {
+  fill: #f59e0b;
+  animation: beaconTwinkle1 1.8s ease-in-out infinite 0.4s;
+}
+
+.ab-beacon--amber2 {
+  fill: #fbbf24;
+  animation: beaconTwinkle2 2.6s ease-in-out infinite 1.2s;
+}
+
+/* Red radio/aviation tower light */
+.ab-beacon--red {
+  fill: #f43f5e;
+  animation: beaconRedBlink 1.4s steps(1) infinite;
+}
+
+@keyframes beaconTwinkle1 {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1.0; }
+}
+
+@keyframes beaconTwinkle2 {
+  0%, 100% { opacity: 0.20; }
+  50%      { opacity: 0.90; }
+}
+
+@keyframes beaconRedBlink {
+  0%, 65%  { opacity: 1.0; }
+  66%, 100% { opacity: 0.15; }
+}
+
+/* Ground Mist / Fog Overlay */
+.ab-horizon-mist {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 110px;
+  background: linear-gradient(
+    to top,
+    rgba(6, 11, 26, 0.92) 0%,
+    rgba(9, 17, 44, 0.45) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+[data-theme="light"] .ab-horizon-mist {
+  background: linear-gradient(
+    to top,
+    rgba(254, 243, 226, 0.85) 0%,
+    rgba(242, 196, 206, 0.30) 50%,
+    transparent 100%
+  );
+}
+
+/* ─── Reduced Motion Support ─────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .ab-gradient,
-  .ab-blob,
-  .ab-moon,
+  .ab-nebula,
+  .ab-aurora,
   .ab-moon-glow,
-  .ab-cloud {
+  .ab-moon,
+  .ab-cloud,
+  .ab-beacon {
     animation: none !important;
   }
-  .ab-cloud { display: none; }
+  .ab-cloud {
+    display: none;
+  }
+  .ab-mouse-glow {
+    display: none;
+  }
 }

@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-// Apply saved theme before paint to avoid flash
-const saved = localStorage.getItem('portfolio-theme') ?? 'dark'
-document.documentElement.setAttribute('data-theme', saved)
+// Default permanently locked to dark theme
+localStorage.removeItem('portfolio-theme')
+document.documentElement.setAttribute('data-theme', 'dark')
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

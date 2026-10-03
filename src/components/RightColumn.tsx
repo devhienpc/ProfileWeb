@@ -258,32 +258,34 @@ export default function RightColumn(_props: RightColumnProps = {}) {
         <div className="corkboard-actions">
           <button
             type="button"
-            className="corkboard-btn corkboard-btn-ghost"
-            onClick={fetchNotes}
-            title="Làm mới bảng"
-            aria-label="Tải lại ghi chú"
-          >
-            <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
-          </button>
-
-          <button
-            type="button"
-            className="corkboard-btn corkboard-btn-ghost"
-            onClick={() => setIsExpanded(prev => !prev)}
-            title={isExpanded ? 'Thu nhỏ bảng' : 'Phóng to toàn màn hình'}
-            aria-label={isExpanded ? 'Thu nhỏ' : 'Phóng to'}
-          >
-            {isExpanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
-          </button>
-
-          <button
-            type="button"
             className="corkboard-btn corkboard-btn-primary"
             onClick={() => setIsFormOpen(true)}
           >
             <Plus size={13} />
             <span>Gửi note</span>
           </button>
+
+          <div className="corkboard-tools">
+            <button
+              type="button"
+              className="corkboard-btn corkboard-btn-ghost"
+              onClick={fetchNotes}
+              title="Làm mới bảng"
+              aria-label="Tải lại ghi chú"
+            >
+              <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
+            </button>
+
+            <button
+              type="button"
+              className="corkboard-btn corkboard-btn-ghost"
+              onClick={() => setIsExpanded(prev => !prev)}
+              title={isExpanded ? 'Thu nhỏ bảng' : 'Phóng to toàn màn hình'}
+              aria-label={isExpanded ? 'Thu nhỏ' : 'Phóng to'}
+            >
+              {isExpanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+            </button>
+          </div>
         </div>
       </div>
 

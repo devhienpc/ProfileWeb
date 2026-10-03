@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react'
  * @param speed    ms per character (default 55)
  * @param startDelay ms before typing starts (default 300)
  */
-export function useTypewriter(text: string, speed = 55, startDelay = 300): string {
+export function useTypewriter(text: string, speed = 55, startDelay = 300, enabled = true): string {
   const reduced = useRef(
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -17,6 +17,7 @@ export function useTypewriter(text: string, speed = 55, startDelay = 300): strin
 
   useEffect(() => {
     if (reduced.current) { setDisplayed(text); return }
+    if (!enabled) { setDisplayed(''); return }
 
     setDisplayed('')
     let i = 0
@@ -35,8 +36,7 @@ export function useTypewriter(text: string, speed = 55, startDelay = 300): strin
       clearTimeout(startTimer)
       clearInterval(charTimer)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [text])
+  }, [text, enabled, speed, startDelay])
 
   return displayed
 }
