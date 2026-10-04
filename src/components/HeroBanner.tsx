@@ -63,6 +63,20 @@ export default function HeroBanner({ profile, socials, loading }: HeroBannerProp
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
+      {/* Anime video background */}
+      <div className="hero-anime-wrap" aria-hidden="true">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="hero-anime-media"
+        >
+          <source src="/anime-hero.mp4" type="video/mp4" />
+        </video>
+        <div className="hero-anime-fade" />
+      </div>
+
       <div className="hero-glow-overlay" aria-hidden="true" />
 
       {/* Avatar */}
